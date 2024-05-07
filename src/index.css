@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input {
+  font-family: "Inter", sans-serif;
+}
+
+.gradient {
+  position: absolute;
+  width: 800px;
+  height: 150px;
+  margin: auto;
+  background: #18b2de;
+  -webkit-filter: blur(90px);
+  filter: blur(90px);
+  z-index: -1;
+  top: -150px;
+}
+
