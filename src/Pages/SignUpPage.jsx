@@ -111,7 +111,7 @@ const SignUp = () => {
       />
 
       <Button
-        text={loading ? "loading..." : "Sign Up"}
+        text={loading ? "Loading..." : "Sign Up"}
         disabled={loading}
         onClick={handleSignUp}
       />

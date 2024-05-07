@@ -82,7 +82,7 @@ const LogIn = () => {
       />
 
       <Button
-        text={loading ? "loading..." : "Log In"}
+        text={loading ? "Loading..." : "Log In"}
         disabled={loading}
         onClick={handleLogIn}
       />

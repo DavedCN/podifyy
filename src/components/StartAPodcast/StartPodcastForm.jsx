@@ -42,8 +42,6 @@ const CreatePodcastForm = () => {
           createdBy: auth.currentUser.uid,
         };
 
-
-
         const docRef = await addDoc(collection(db, "podcasts"), podcastData);
 
         toast.success("Podcast Created!");
@@ -101,7 +99,7 @@ const CreatePodcastForm = () => {
       />
 
       <Button
-        text={loading ? "loading..." : "Create Podcast"}
+        text={loading ? "Loading..." : "Create Podcast"}
         disabled={loading}
         onClick={handleSubmit}
       />
