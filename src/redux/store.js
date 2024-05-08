@@ -21,7 +21,7 @@ import episodeReducer from "./slices/episodeSlice";
 export const store = configureStore({
   reducer: {
     user: useReducer,
-    podcast: podcastReducer,
+    podcasts: podcastReducer,
     episode: episodeReducer,
   },
 });

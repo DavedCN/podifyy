@@ -9,7 +9,7 @@ const SignInOrUp = () => {
     <>
       <div className="w-full flex justify-center items-center flex-col  mt-16">
         <h1 className="text-2xl text-center font-semibold mb-8 ">
-          {!flag ? "Sign Up " : "Login In"}
+          {!flag ? "Sign Up " : "Log In"}
         </h1>
         {!flag ? <SignUp /> : <LogIn />}
         <p className="text-sm cursor-pointer" onClick={() => setFlag(!flag)}>
