@@ -36,8 +36,8 @@ const PodcastsPage = () => {
   );
   return (
     <>
-      <div className="text-center w-full">
-        <h1 className="text-xl font-medium mb-8 mt-8">Discover Podcasts</h1>
+      <div className="max-container">
+        <h1 className="text-xl m-2">Discover Podcasts</h1>
 
         <InputComponent
           state={searchText}
@@ -46,7 +46,7 @@ const PodcastsPage = () => {
           placeholder="Search By Title"
           required={true}
         />
-        <div className="w-full  p-16 flex justify-between gap-5 flex-wrap">
+        <div className="flex justify-center  flex-wrap gap-4">
           {filteredPodcasts.length > 0 ? (
             filteredPodcasts.map((item) => (
               <PodcastsCard
