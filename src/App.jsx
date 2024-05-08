@@ -13,6 +13,8 @@ import { setUser } from "./redux/slices/userSlice";
 import PrivateRoutes from "./components/Common/PrivateRoutes.jsx";
 import CreatePodcastPage from "./Pages/CreatePodcastPage.jsx";
 import PodcastsPage from "./Pages/PodcastsPage.jsx";
+import PodcastsDetailsPage from "./Pages/PodcastsDetailsPage.jsx";
+import CreateAnEpisodePage from "./Pages/CreateAnEpisodePage.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -57,6 +59,11 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="createpodcast" element={<CreatePodcastPage />} />
           <Route path="podcasts" element={<PodcastsPage />} />
+          <Route path="/podcast/:Id" element={<PodcastsDetailsPage />} />
+          <Route
+            path="/podcast/:Id/create-episode"
+            element={<CreateAnEpisodePage />}
+          />
         </Route>
       </Routes>
       <ToastContainer />
