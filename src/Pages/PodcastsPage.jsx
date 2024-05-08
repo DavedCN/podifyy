@@ -44,9 +44,8 @@ const PodcastsPage = () => {
           setState={setSearchText}
           type="text"
           placeholder="Search By Title"
-          required={true}
         />
-        <div className="flex justify-center  flex-wrap gap-4">
+        <div className="flex justify-center  flex-wrap gap-6 mt-6">
           {filteredPodcasts.length > 0 ? (
             filteredPodcasts.map((item) => (
               <PodcastsCard
@@ -57,7 +56,7 @@ const PodcastsPage = () => {
               />
             ))
           ) : (
-            <p>No Podcasts</p>
+            <p>{searchText ? "No Podcasts Found" : "No Podcasts Available"}</p>
           )}
         </div>
       </div>
