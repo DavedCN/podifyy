@@ -31,7 +31,7 @@ const App = () => {
                   fullname: userData.fullname,
                   email: userData.email,
                   uid: userData.uid,
-                  // profilePic: userData.photoURL,
+                  profilePic: userData.profilePic,
                 })
               );
             }
