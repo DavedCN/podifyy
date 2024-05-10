@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { setPodcasts } from "../redux/slices/podcastSlice";
-import PodcastsCard from "../components/Podcasts/PodcastsCard";
+import PodcastsCard from "../components/Podcasts/PodcastsCard/PodcastsCard";
 import InputComponent from "../components/Common/input/input";
 const PodcastsPage = () => {
   const dispatch = useDispatch();

@@ -9,6 +9,10 @@ export default {
         white: "#fff",
         grey: "#d7d7d7",
         "purple-grey": "#8f8297",
+        audioBg: "rgba(14,2,21,0.5)",
+      },
+      hueRotate: {
+        25: "25deg",
       },
     },
   },
