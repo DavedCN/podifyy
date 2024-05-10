@@ -32,7 +32,7 @@ const ProfilePage = () => {
       <div className="max-container pt-5">
         <img
           className="w-32 h-32 rounded-full border-none mb-5 object-fit"
-          src={user.profilePic}
+          src={user?.profilePic}
           alt=""
         />
         <div className=" px-20 text-center">
