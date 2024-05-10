@@ -8,23 +8,31 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import FileInput from "../components/Input/FileInput";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const SignUp = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const profilePictureHandler = (file) => {
+    setProfilePic(file);
+  };
 
   const handleSignUp = async () => {
     if (
       password === confirmpassword &&
       password.length >= 6 &&
       fullname &&
-      email
+      email &&
+      profilePic
     ) {
       try {
         //CLEARING INPUT FIELDS
@@ -33,6 +41,7 @@ const SignUp = () => {
         setEmail("");
         setPassword("");
         setConfirmPassword("");
+        setProfilePic(null);
 
         setLoading(true);
 
@@ -45,11 +54,19 @@ const SignUp = () => {
 
         const user = userCredential.user;
 
+        const storage = getStorage();
+        const fileRef = ref(storage, "profilePictures/" + user.uid);
+
+        //UPLOADING PROFILE PICTURE
+        await uploadBytes(fileRef, profilePic);
+        const profilePicUrl = await getDownloadURL(fileRef);
+
         //SAVING USER DETAILS
         await setDoc(doc(db, "users", user.uid), {
           fullname: fullname,
           email: user.email,
           uid: user.uid,
+          profilePic: profilePicUrl,
         });
 
         //SAVE DATA IN REDUX AND CALL THE ACTION
@@ -58,10 +75,12 @@ const SignUp = () => {
             fullname: fullname,
             email: user.email,
             uid: user.uid,
+            profilePic: profilePicUrl,
           })
         );
 
         toast.success("Account created successfully");
+
         navigate("/profile");
       } catch (err) {
         console.log(err);
@@ -108,6 +127,13 @@ const SignUp = () => {
         type="password"
         placeholder="Confirm Password"
         required={true}
+      />
+
+      <FileInput
+        accept="image/*"
+        id="profile-picture"
+        fileHandlenc={profilePictureHandler}
+        text="Profile Picture"
       />
 
       <Button

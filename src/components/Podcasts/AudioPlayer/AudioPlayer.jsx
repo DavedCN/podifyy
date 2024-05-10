@@ -9,14 +9,11 @@ const AudioPlayer = ({ audioSrc, image }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
 
-  const handleDurationChange = (event) => {
-    setCurrentTime(event.target.value);
-    audioRef.current.currentTime = event.target.value;
-  };
 
-  const handleVolumeChange = (event) => {
-    setVolume(event.target.value);
-    audioRef.current.volume = volume;
+  const handleDuration = (event) => {
+    const newTime = parseFloat(event.target.value);
+    setCurrentTime(newTime);
+    audioRef.current.currentTime = newTime;
   };
 
   const handleLoadedMetadata = () => {
@@ -26,6 +23,36 @@ const AudioPlayer = ({ audioSrc, image }) => {
   const handleTimeUpdate = () => {
     setCurrentTime(audioRef.current.currentTime);
   };
+
+  const handleEnded = () => {
+    setCurrentTime(0);
+    setIsPlaying(false);
+  };
+
+  const handleVolume = (event) => {
+    setVolume(event.target.value);
+    audioRef.current.volume = volume;
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, []);
 
   useEffect(() => {
     if (isPlaying) {
@@ -51,17 +78,6 @@ const AudioPlayer = ({ audioSrc, image }) => {
     setIsMuted(volume === 0);
   }, [volume]);
 
-  useEffect(() => {
-    const audioElement = audioRef.current;
-    audioElement.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audioElement.addEventListener("timeupdate", handleTimeUpdate);
-
-    return () => {
-      audioElement.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      audioElement.removeEventListener("timeupdate", handleTimeUpdate);
-    };
-  }, []);
-
   return (
     <div className="w-full fixed bottom-0 left-0 py-4 px-0 flex justify-center items-center gap-10 bg-audioBg ">
       <img
@@ -78,18 +94,19 @@ const AudioPlayer = ({ audioSrc, image }) => {
         >
           {!isPlaying ? <FaPlay /> : <FaPause />}
         </div>
-        <p>{typeof currentTime === "number" ? currentTime.toFixed(2) : 0}</p>
-
+        <p>{formatTime(currentTime)}</p>
         <input
           className="w-full hue-rotate-25"
           type="range"
-          onChange={handleDurationChange}
           min={0}
-          step={1}
-          max={duration}
           value={currentTime}
+          max={duration}
+          step={0.01}
+          onChange={handleDuration}
+          name=""
+          id=""
         />
-        <p>{duration.toFixed(2)}</p>
+        <p>{formatTime(duration-currentTime)}</p>
         <div
           className="cursor-pointer ml-20 hidden md:block"
           onClick={() => setIsMuted(!isMuted)}
@@ -97,13 +114,15 @@ const AudioPlayer = ({ audioSrc, image }) => {
           {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
         </div>
         <input
-          className="w-2/5 hue-rotate-25  cursor-pointer hidden md:block"   
+          className="w-2/5 hue-rotate-25  cursor-pointer  hidden md:block"
           type="range"
-          onChange={handleVolumeChange}
+          onChange={handleVolume}
           min={0}
           max={1}
           step={0.01}
           value={volume}
+          name=""
+          id=""
         />
       </div>
     </div>
