@@ -35,7 +35,8 @@ const LogIn = () => {
         const user = userCredential.user;
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.data();
-        console.log(user);
+
+        console.log(userData);
 
         //SAVE DATA IN REDUX AND CALL THE ACTION
         dispatch(
@@ -43,7 +44,7 @@ const LogIn = () => {
             fullname: userData.fullname,
             email: user.email,
             uid: user.uid,
-            // profilePic: user.profilePic,
+            profilePic: user.profilePic,
           })
         );
 
