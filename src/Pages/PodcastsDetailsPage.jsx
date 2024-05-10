@@ -1,12 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button from "../components/Common/Button/Button";
+import EpisodeDetails from "../components/Podcasts/EpisodesDetails";
 const PodcastsDetailsPage = () => {
   const { Id } = useParams();
   const [podcast, setPodcast] = useState({});
+  const [episodes, setEpisodes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +35,26 @@ const PodcastsDetailsPage = () => {
     }
   };
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "podcasts", Id, "episodes")),
+      (querySnapshot) => {
+        const episodesData = [];
+        querySnapshot.forEach((doc) => {
+          episodesData.push({ ...doc.data(), id: doc.id });
+        });
+        setEpisodes(episodesData);
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [Id]);
+
   return (
     <>
       <div className="w-full flex justify-center items-start px-10 md:px-32 mt-2 flex-col ">
@@ -53,11 +75,29 @@ const PodcastsDetailsPage = () => {
             </div>{" "}
             <img
               className="w-full h-56 rounded-lg object-fit opacity-65"
-              src={podcast.displayImage}
+              src={podcast.bannerImage}
               alt={podcast.title}
             />
-            <p className="my-2 text-purple-grey">{podcast.description}</p>
-            <h1 className="text-xl my-2">Episodes</h1>
+            <p className="my-2 text-purple-grey text-xl">
+              {podcast.description}
+            </p>
+            <h1 className="text-2xl my-2">Episodes</h1>
+            {episodes.length > 0 ? (
+              <>
+                {episodes.map((episode, index) => (
+                  <EpisodeDetails
+                    key={episode.id}
+                    index={index + 1}
+                    title={episode.title}
+                    desc={episode.description}
+                    audioFile={episode.audioFile}
+                    onClick={(file) => console.log("Playing", file)}
+                  />
+                ))}
+              </>
+            ) : (
+              <p className="ml-1">No episodes</p>
+            )}
           </>
         )}
       </div>
