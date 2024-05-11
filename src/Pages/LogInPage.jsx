@@ -61,6 +61,9 @@ const LogIn = () => {
       } else if (password.length < 6) {
         toast.error("Password must be atleast 6 characters long");
       }
+          else if (!profilePic) {
+        toast.error("Please select profile picture");
+      }
     }
 
     setLoading(false);
